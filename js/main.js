@@ -16,6 +16,8 @@ const tableRow = items => compose(tableRowTag, tableCells)(items)
 const tableCell = tag('td')
 const tableCells = items => items.map(tableCell).join('')
 
+const trashIcon = tag({tag: 'i', attrs: {class: 'fas fa-trash-alt'}})('')
+
 let description = $('#description')
 let calories = $('#calories')
 let carbs = $('#carbs')
@@ -101,11 +103,13 @@ const renderItems = () => {
 
   list.map((item, index) => {
 
-    const removeButton = `
-    <button class="btn btn-outline-danger" onclick="removeItem(${index})">
-      <i class="fas fa-trash-alt"></i>
-    </button>
-    `
+    const removeButton = tag({
+      tag: 'button',
+      attrs: {
+        class: 'btn btn-outline-danger',
+        onclick: `removeItem(${index})`
+      }
+    })(trashIcon)
 
     $('tbody').append(tableRow([item.description, item.calories, item.carbs, item.protein, removeButton]))
   })
