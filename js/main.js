@@ -7,7 +7,7 @@ const attrsToString = (obj = {}) => {
 
   for (let i = 0; i < keys.length; i++) {
     let attr = keys[i]
-    attrs.push(`${attr}=“${obj[attr]}"`)
+    attrs.push(`${attr}="${obj[attr]}"`)
   }
 
   const string = attrs.join(' ')
@@ -30,6 +30,8 @@ const tableRow = items => compose(tableRowTag, tableCells)(items)
 
 const tableCell = tag('td')
 const tableCells = items => items.map(tableCell).join('')
+
+const trashIcon = tag({tag: 'i', attrs: {class: 'fas fa-trash-alt'}})('')
 
 let description = $('#description')
 let calories = $('#calories')
@@ -83,6 +85,13 @@ const add = () => {
   renderItems()
 }
 
+const removeItem = (index) => {
+  list.splice(index, 1)
+
+  updateTotals()
+  renderItems()
+}
+
 const updateTotals = () => {
   let calories = 0, carbs = 0, protein = 0
 
@@ -107,7 +116,16 @@ const cleanInputs = () => {
 const renderItems = () => {
   $('tbody').empty()
 
-  list.map(item => {
-    $('tbody').append(tableRow([item.description, item.calories, item.carbs, item.protein]))
+  list.map((item, index) => {
+
+    const removeButton = tag({
+      tag: 'button',
+      attrs: {
+        class: 'btn btn-outline-danger',
+        onclick: `removeItem(${index})`
+      }
+    })(trashIcon)
+
+    $('tbody').append(tableRow([item.description, item.calories, item.carbs, item.protein, removeButton]))
   })
 }
