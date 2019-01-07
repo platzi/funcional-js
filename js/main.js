@@ -80,7 +80,7 @@ const add = () => {
   list.push(newItem)
   updateTotals()
   cleanInputs()
-  console.log(list)
+  renderItems()
 }
 
 const updateTotals = () => {
@@ -102,4 +102,12 @@ const cleanInputs = () => {
   calories.val('')
   carbs.val('')
   protein.val('')
+}
+
+const renderItems = () => {
+  $('tbody').empty()
+
+  list.map(item => {
+    $('tbody').append(tableRow([item.description, item.calories, item.carbs, item.protein]))
+  })
 }
